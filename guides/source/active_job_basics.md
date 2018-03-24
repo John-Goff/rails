@@ -147,7 +147,7 @@ class GuestsCleanupJob < ApplicationJob
   #....
 end
 
-# Now your job will use `resque` as it's backend queue adapter overriding what
+# Now your job will use `resque` as its backend queue adapter overriding what
 # was configured in `config.active_job.queue_adapter`.
 ```
 
@@ -290,7 +290,7 @@ For example, you could send metrics for every job enqueued:
 
 ```ruby
 class ApplicationJob
-  before_enqueue { |job| $statsd.increment "#{job.name.underscore}.enqueue" }
+  before_enqueue { |job| $statsd.increment "#{job.class.name.underscore}.enqueue" }
 end
 ```
 

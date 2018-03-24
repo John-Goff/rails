@@ -242,6 +242,12 @@ class CalculationsTest < ActiveRecord::TestCase
     assert_queries(1) { assert_equal 11, posts.count(:all) }
   end
 
+  def test_count_with_eager_loading_and_custom_order_and_distinct
+    posts = Post.includes(:comments).order("comments.id").distinct
+    assert_queries(1) { assert_equal 11, posts.count }
+    assert_queries(1) { assert_equal 11, posts.count(:all) }
+  end
+
   def test_distinct_count_all_with_custom_select_and_order
     accounts = Account.distinct.select("credit_limit % 10").order(Arel.sql("credit_limit % 10"))
     assert_queries(1) { assert_equal 3, accounts.count(:all) }
@@ -803,6 +809,11 @@ class CalculationsTest < ActiveRecord::TestCase
     assert_equal ["David", "david@loudthinking.com"], Topic.order(:id).pick(:author_name, :author_email_address)
     assert_nil Topic.none.pick(:author_name, :author_email_address)
     assert_nil Topic.where("1=0").pick(:author_name, :author_email_address)
+  end
+
+  def test_pick_delegate_to_all
+    cool_first = minivans(:cool_first)
+    assert_equal cool_first.color, Minivan.pick(:color)
   end
 
   def test_grouped_calculation_with_polymorphic_relation

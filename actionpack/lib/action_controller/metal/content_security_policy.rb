@@ -14,12 +14,16 @@ module ActionController #:nodoc:
     end
 
     module ClassMethods
-      def content_security_policy(**options, &block)
+      def content_security_policy(enabled = true, **options, &block)
         before_action(options) do
           if block_given?
-            policy = request.content_security_policy.clone
+            policy = current_content_security_policy
             yield policy
             request.content_security_policy = policy
+          end
+
+          unless enabled
+            request.content_security_policy = nil
           end
         end
       end
@@ -39,6 +43,10 @@ module ActionController #:nodoc:
 
       def content_security_policy_nonce
         request.content_security_policy_nonce
+      end
+
+      def current_content_security_policy
+        request.content_security_policy.try(:clone) || ActionDispatch::ContentSecurityPolicy.new
       end
   end
 end

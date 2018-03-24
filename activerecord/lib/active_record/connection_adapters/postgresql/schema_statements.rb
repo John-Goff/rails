@@ -107,7 +107,7 @@ module ActiveRecord
             oid = row[4]
             comment = row[5]
 
-            using, expressions, where = inddef.scan(/ USING (\w+?) \((.+?)\)(?: WHERE (.+))?\z/).flatten
+            using, expressions, where = inddef.scan(/ USING (\w+?) \((.+?)\)(?: WHERE (.+))?\z/m).flatten
 
             orders = {}
             opclasses = {}
@@ -583,7 +583,7 @@ module ActiveRecord
                .gsub(/\s+NULLS\s+(?:FIRST|LAST)\b/i, "")
             }.reject(&:blank?).map.with_index { |column, i| "#{column} AS alias_#{i}" }
 
-          [super, *order_columns].join(", ")
+          (order_columns << super).join(", ")
         end
 
         def update_table_definition(table_name, base) # :nodoc:

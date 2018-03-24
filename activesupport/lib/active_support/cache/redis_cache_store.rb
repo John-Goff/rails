@@ -118,7 +118,7 @@ module ActiveSupport
         def build_redis(redis: nil, url: nil, **redis_options) #:nodoc:
           urls = Array(url)
 
-          if redis.respond_to?(:call)
+          if redis.is_a?(Proc)
             redis.call
           elsif redis
             redis
@@ -154,7 +154,7 @@ module ActiveSupport
       #   :url   Array  -> Redis::Distributed.new([{ url: … }, { url: … }, …])
       #
       # No namespace is set by default. Provide one if the Redis cache
-      # server is shared with other apps: <tt>namespace: 'myapp-cache'<tt>.
+      # server is shared with other apps: <tt>namespace: 'myapp-cache'</tt>.
       #
       # Compression is enabled by default with a 1kB threshold, so cached
       # values larger than 1kB are automatically compressed. Disable by

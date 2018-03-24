@@ -13,13 +13,12 @@ gem "rake", ">= 11.1"
 # be loaded after loading the test library.
 gem "mocha", require: false
 
-gem "capybara", "~> 2.15"
+gem "capybara", ">= 2.15", "< 4.0"
 
 gem "rack-cache", "~> 1.2"
 gem "coffee-rails"
 gem "sass-rails"
 gem "turbolinks", "~> 5"
-gem "webmock"
 
 # require: false so bcrypt is loaded only when has_secure_password is used.
 # This is to avoid Active Model (and by extension the entire framework)
@@ -46,7 +45,7 @@ group :doc do
 end
 
 # Active Support.
-gem "dalli", ">= 2.2.1"
+gem "dalli", "< 2.7.7"
 gem "listen", ">= 3.0.5", "< 3.2", require: false
 gem "libxml-ruby", platforms: :ruby
 gem "connection_pool", require: false
@@ -65,9 +64,6 @@ group :job do
   gem "sneakers", require: false
   gem "que", require: false
   gem "backburner", require: false
-  # TODO: add qu after it support Rails 5.1
-  # gem 'qu-rails', github: "bkeepers/qu", branch: "master", require: false
-  # gem "qu-redis", require: false
   gem "delayed_job_active_record", require: false
   gem "sequel", require: false
 end
@@ -151,7 +147,7 @@ end
 platforms :rbx do
   # The rubysl-yaml gem doesn't ship with Psych by default as it needs
   # libyaml that isn't always available.
-  gem "psych", "~> 2.0"
+  gem "psych", "~> 3.0"
 end
 
 # Gems that are necessary for Active Record tests with Oracle.
